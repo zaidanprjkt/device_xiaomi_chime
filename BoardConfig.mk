@@ -5,6 +5,7 @@
 #
 
 DEVICE_PATH := device/xiaomi/chime
+#COMMON_KERNEL_PATH := device/xiaomi/chime-prebuilt
 
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(DEVICE_PATH)/configs/vintf/framework_compatibility_matrix.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml
@@ -62,18 +63,25 @@ BOARD_KERNEL_SECOND_OFFSET := 0xf00000
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_BOOTIMG_HEADER_VERSION := 2
-BOARD_KERNEL_IMAGE_NAME := Image.gz
+BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_SEPARATED_DTBO := true
 TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_SOURCE := kernel/xiaomi/chime
-TARGET_KERNEL_CONFIG := vendor/chime_defconfig
-TARGET_KERNEL_CLANG_COMPILE := true
+#TARGET_KERNEL_SOURCE := kernel/xiaomi/chime
+#TARGET_KERNEL_CONFIG := vendor/chime_defconfig
+#TARGET_KERNEL_CLANG_COMPILE := true
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
-TARGET_KERNEL_ADDITIONAL_FLAGS := DTC_EXT=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/dtc/dtc
-TARGET_KERNEL_ADDITIONAL_FLAGS := LLVM=1 LLVM_IAS=1
+#TARGET_KERNEL_ADDITIONAL_FLAGS := DTC_EXT=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/dtc/dtc
+
 BOARD_RAMDISK_USE_LZ4 := true
 #TARGET_KERNEL_CLANG_VERSION := r522817
-override KERNEL_TOOLCHAIN_PREFIX_arm := arm-linux-android-
+#override KERNEL_TOOLCHAIN_PREFIX_arm := arm-linux-android-
+
+#Kernel - prebuilt
+TARGET_FORCE_PREBUILT_KERNEL := true
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/$(TARGET_DEVICE)/dtbo.img
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)-kernel/$(TARGET_DEVICE)/dtb
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+
 
 # Platform
 TARGET_BOARD_PLATFORM := bengal
